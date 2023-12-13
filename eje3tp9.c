@@ -162,20 +162,44 @@ void actualizarStock(DatosArbol *arbolito, int cant) {
         printf("%d. %s\n", i, arbolito[i].especie.nombreVulgar);
     }
     scanf("%d", &opcion);
-    do
-    {
-        printf("Stock actual de %s: %d\n", arbolito[opcion].especie.nombreVulgar, arbolito[opcion].stock);  
+    do {
+        printf("Stock actual de %s: %d\n", arbolito[opcion].especie.nombreVulgar, arbolito[opcion].stock);
         printf("Ingrese el nuevo stock: \n");
         scanf("%d", &valor);
-        //Verifico el valor con la cant de pedidos actuales
-        if(arbolito[opcion].cantPedidos <= valor){
+        // Verifico el valor con la cant de pedidos actuales
+        if (arbolito[opcion].cantPedidos <= valor) {
             arbolito[opcion].stock = valor;
             bandera = 1;
             printf("Stock actualizado con exito\n");
             printf("Nuevo stock: %d\n", arbolito[opcion].stock);
-        }else{
+        } else {
             printf("El stock no puede ser menor a la cant de pedidos actuales\n");
             printf("Cantidad de pedidos actuales: %d\n", arbolito[opcion].cantPedidos);
+        }
+    } while (bandera == 0);
+}
+
+void actualizarPrecio(DatosArbol *arbolito, int cant);
+void actualizarPrecio(DatosArbol *arbolito, int cant) {
+    int opcion, bandera = 0;  // Uso esta variable para pararme en la especie elegida, bandera para el do while
+    float valor = 0;
+    printf("Elija una especie para agregar modificar su precio\n");
+    printf("\n");
+    for (int i = 0; i < cant; i++) {
+        printf("%d. %s\n", i, arbolito[i].especie.nombreVulgar);
+    }
+    scanf("%d", &opcion);
+    do {
+        printf("Precio actual de la especie %s: $%2.f\n", arbolito[opcion].especie.nombreVulgar, arbolito[opcion].precio);
+        printf("Ingrese un nuevo precio: \n");
+        scanf("%f", &valor);
+        if (valor > 0) {
+            arbolito[opcion].precio = valor;
+            bandera = 1;
+            printf("Precio actualizado con exito\n");
+            printf("Precio actual de la especie %s: $%2.f\n", arbolito[opcion].especie.nombreVulgar, arbolito[opcion].precio);
+        }else{
+            printf("El precio no puede ser menor a 0, intene de nuevo \n");
         }
     } while (bandera == 0);
 }
@@ -203,10 +227,11 @@ int main() {
          NULL}};
     DatosArbol *listaArboles;
     listaArboles = arboles;
-    actualizarStock(listaArboles, 3);
-    //agregarPedidos(listaArboles, 3);
-    //mostrarTodosLosPedidos(listaArboles, 3);
-    //  Asigno el tamaño en funcion de la cant de clientes que hayan realizado pedidos.
+    actualizarPrecio(listaArboles,3);
+    //actualizarStock(listaArboles, 3);
+    // agregarPedidos(listaArboles, 3);
+    // mostrarTodosLosPedidos(listaArboles, 3);
+    //   Asigno el tamaño en funcion de la cant de clientes que hayan realizado pedidos.
     /*for (int i = 0; i < 3; i++) {
         listaArboles[i].pedido = (DatosPedido *)malloc(sizeof(DatosPedido) * listaArboles[i].cantPedidos);
 
