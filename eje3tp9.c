@@ -99,24 +99,27 @@ void mostrarTodosLosPedidos(DatosArbol *arbolito, int cant) {
 
 void agregarPedidos(DatosArbol *arbolito, int cant);
 void agregarPedidos(DatosArbol *arbolito, int cant) {
-    int opcion; //Uso esta variable para pararme en la especie elegida
+    int opcion;  // Uso esta variable para pararme en la especie elegida
     printf("Elija una especie para agregar un pedido\n");
     printf("\n");
     for (int i = 0; i < cant; i++) {
         printf("%d. %s\n", i, arbolito[i].especie.nombreVulgar);
     }
     scanf("%d", &opcion);
+    // Verifico que haya stock de la especie elegida
     if (arbolito[opcion].stock > 0) {
+        // Verifico la la cant de pedidos ya cargada
         if (arbolito[opcion].cantPedidos == 0) {
+            // Si no hay, creo el aumento la cant de ped y creo el arreglo dinamico
             arbolito[opcion].cantPedidos++;
             arbolito[opcion].pedido = (DatosPedido *)malloc(sizeof(DatosPedido) * arbolito[opcion].cantPedidos);
-            // datos cliente
+            // pido datos cliente
             printf("Ingrese la razon social: \n");
             fflush(stdin);
             gets(arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosCliente.razonSocial);
             printf("Ingrese el num de tel: \n");
             scanf("%d", &arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosCliente.telefono);
-            // datos empleado
+            // pido datos empleado
             printf("Ingrese el nombre del empleado:\n");
             fflush(stdin);
             gets(arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosEmpleado.nombreEmpleado);
@@ -126,15 +129,16 @@ void agregarPedidos(DatosArbol *arbolito, int cant) {
             printf("Ingrese la cant a ordenar:\n");
             scanf("%d", &arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].cantidad);
         } else {
+            // Si la cant de pedidos ya existia la aumento en uno y redimensiono el arreglo dinamico
             arbolito[opcion].cantPedidos++;
             arbolito[opcion].pedido = (DatosPedido *)realloc(arbolito[opcion].pedido, sizeof(DatosPedido) * arbolito[opcion].cantPedidos);
-            // datos cliente
+            // pido datos cliente
             printf("Ingrese la razon social: \n");
             fflush(stdin);
             gets(arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosCliente.razonSocial);
             printf("Ingrese el num de tel: \n");
             scanf("%d", &arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosCliente.telefono);
-            // datos empleado
+            // pido datos empleado
             printf("Ingrese el nombre del empleado:\n");
             fflush(stdin);
             gets(arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosEmpleado.nombreEmpleado);
@@ -147,6 +151,33 @@ void agregarPedidos(DatosArbol *arbolito, int cant) {
     } else {
         printf("No hay stock disponible \n");
     }
+}
+
+void actualizarStock(DatosArbol *arbolito, int cant);
+void actualizarStock(DatosArbol *arbolito, int cant) {
+    int opcion, bandera = 0, valor = 0;  // Uso esta variable para pararme en la especie elegida, bandera para el do while
+    printf("Elija una especie para agregar modificar su stock\n");
+    printf("\n");
+    for (int i = 0; i < cant; i++) {
+        printf("%d. %s\n", i, arbolito[i].especie.nombreVulgar);
+    }
+    scanf("%d", &opcion);
+    do
+    {
+        printf("Stock actual de %s: %d\n", arbolito[opcion].especie.nombreVulgar, arbolito[opcion].stock);  
+        printf("Ingrese el nuevo stock: \n");
+        scanf("%d", &valor);
+        //Verifico el valor con la cant de pedidos actuales
+        if(arbolito[opcion].cantPedidos <= valor){
+            arbolito[opcion].stock = valor;
+            bandera = 1;
+            printf("Stock actualizado con exito\n");
+            printf("Nuevo stock: %d\n", arbolito[opcion].stock);
+        }else{
+            printf("El stock no puede ser menor a la cant de pedidos actuales\n");
+            printf("Cantidad de pedidos actuales: %d\n", arbolito[opcion].cantPedidos);
+        }
+    } while (bandera == 0);
 }
 //_____________________________________________________________
 
@@ -172,8 +203,9 @@ int main() {
          NULL}};
     DatosArbol *listaArboles;
     listaArboles = arboles;
-    agregarPedidos(listaArboles, 3);
-    mostrarTodosLosPedidos(listaArboles, 3);
+    actualizarStock(listaArboles, 3);
+    //agregarPedidos(listaArboles, 3);
+    //mostrarTodosLosPedidos(listaArboles, 3);
     //  Asigno el tamaño en funcion de la cant de clientes que hayan realizado pedidos.
     /*for (int i = 0; i < 3; i++) {
         listaArboles[i].pedido = (DatosPedido *)malloc(sizeof(DatosPedido) * listaArboles[i].cantPedidos);
