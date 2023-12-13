@@ -97,6 +97,57 @@ void mostrarTodosLosPedidos(DatosArbol *arbolito, int cant) {
     }
 }
 
+void agregarPedidos(DatosArbol *arbolito, int cant);
+void agregarPedidos(DatosArbol *arbolito, int cant) {
+    int opcion; //Uso esta variable para pararme en la especie elegida
+    printf("Elija una especie para agregar un pedido\n");
+    printf("\n");
+    for (int i = 0; i < cant; i++) {
+        printf("%d. %s\n", i, arbolito[i].especie.nombreVulgar);
+    }
+    scanf("%d", &opcion);
+    if (arbolito[opcion].stock > 0) {
+        if (arbolito[opcion].cantPedidos == 0) {
+            arbolito[opcion].cantPedidos++;
+            arbolito[opcion].pedido = (DatosPedido *)malloc(sizeof(DatosPedido) * arbolito[opcion].cantPedidos);
+            // datos cliente
+            printf("Ingrese la razon social: \n");
+            fflush(stdin);
+            gets(arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosCliente.razonSocial);
+            printf("Ingrese el num de tel: \n");
+            scanf("%d", &arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosCliente.telefono);
+            // datos empleado
+            printf("Ingrese el nombre del empleado:\n");
+            fflush(stdin);
+            gets(arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosEmpleado.nombreEmpleado);
+            printf("Ingrese el apellido del empleado:\n");
+            fflush(stdin);
+            gets(arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosEmpleado.apellidoEmpleado);
+            printf("Ingrese la cant a ordenar:\n");
+            scanf("%d", &arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].cantidad);
+        } else {
+            arbolito[opcion].cantPedidos++;
+            arbolito[opcion].pedido = (DatosPedido *)realloc(arbolito[opcion].pedido, sizeof(DatosPedido) * arbolito[opcion].cantPedidos);
+            // datos cliente
+            printf("Ingrese la razon social: \n");
+            fflush(stdin);
+            gets(arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosCliente.razonSocial);
+            printf("Ingrese el num de tel: \n");
+            scanf("%d", &arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosCliente.telefono);
+            // datos empleado
+            printf("Ingrese el nombre del empleado:\n");
+            fflush(stdin);
+            gets(arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosEmpleado.nombreEmpleado);
+            printf("Ingrese el apellido del empleado:\n");
+            fflush(stdin);
+            gets(arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].datosEmpleado.apellidoEmpleado);
+            printf("Ingrese la cant a ordenar:\n");
+            scanf("%d", &arbolito[opcion].pedido[arbolito[opcion].cantPedidos - 1].cantidad);
+        }
+    } else {
+        printf("No hay stock disponible \n");
+    }
+}
 //_____________________________________________________________
 
 //_________________ Funcion principal _________________________
@@ -121,8 +172,9 @@ int main() {
          NULL}};
     DatosArbol *listaArboles;
     listaArboles = arboles;
+    agregarPedidos(listaArboles, 3);
     mostrarTodosLosPedidos(listaArboles, 3);
-    // Asigno el tamaño en funcion de la cant de clientes que hayan realizado pedidos.
+    //  Asigno el tamaño en funcion de la cant de clientes que hayan realizado pedidos.
     /*for (int i = 0; i < 3; i++) {
         listaArboles[i].pedido = (DatosPedido *)malloc(sizeof(DatosPedido) * listaArboles[i].cantPedidos);
 
